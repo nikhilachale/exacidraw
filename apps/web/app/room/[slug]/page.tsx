@@ -22,7 +22,7 @@ export default async function ChatRoom1(
     }
 ) {
     try {
-        const slug = params.slug;
+        const slug =   params.slug;
         const roomId = await getRoomId(slug);
         return <ChatRoom id={roomId} />;
     } catch (error) {

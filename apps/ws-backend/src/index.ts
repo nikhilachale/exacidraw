@@ -1,9 +1,10 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import jwt, { JwtPayload } from "jsonwebtoken";
-const JWT_SECRET ="wefeef"
-import { prismaClient } from "@repo/db/client";
 
+import { prismaClient } from "@repo/db/client";
 const wss = new WebSocketServer({ port: 8080 });
+ import { JWT_SECRET } from '@repo/common-backend/config';
+console.log("WebSocket server running on ws://localhost:8080");
 
 interface User {
   ws: WebSocket,
@@ -33,6 +34,7 @@ function checkUser(token: string): string | null {
 }
 
 wss.on('connection', function connection(ws, request) {
+  console.log("New connection")
   const url = request.url;
   if (!url) {
     return;
@@ -40,6 +42,8 @@ wss.on('connection', function connection(ws, request) {
   const queryParams = new URLSearchParams(url.split('?')[1]);
   const token = queryParams.get('token') || "";
   const userId = checkUser(token);
+  console.log("userId", userId)
+
 
   if (userId == null) {
     ws.close()
